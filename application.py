@@ -29,3 +29,8 @@ def get_setlists():
         output.append(setlist_data)
 
     return {"setlists": setlist_data}
+
+@app.route('/setlists/<id>')
+def get_setlist(id):
+    setlist = Setlist.query.get_or_404(id)
+    return {"name": setlist.name, "songs": setlist.songs}
