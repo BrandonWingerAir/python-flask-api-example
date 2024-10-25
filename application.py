@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -34,3 +34,10 @@ def get_setlists():
 def get_setlist(id):
     setlist = Setlist.query.get_or_404(id)
     return {"name": setlist.name, "songs": setlist.songs}
+
+@app.route('/setlists', methods=['POST'])
+def add_setlist():
+    setlist = Setlist(name=request.json['name'], songs=request.json['songs'])
+    db.session.add(setlist)
+    db.session.commit()
+    return {'id': setlist.id}
