@@ -28,7 +28,7 @@ def get_setlists():
 
         output.append(setlist_data)
 
-    return {"setlists": setlist_data}
+    return {"setlists": output}
 
 @app.route('/setlists/<id>')
 def get_setlist(id):
@@ -41,3 +41,12 @@ def add_setlist():
     db.session.add(setlist)
     db.session.commit()
     return {'id': setlist.id}
+
+@app.route('/setlists/<id>', methods=['DELETE'])
+def delete_setlist(id):
+    setlist = Setlist.query.get(id)
+    if setlist is None:
+        return {"error": "Setlist not found"}
+    db.session.delete(setlist)
+    db.session.commit()
+    return {"message": "Setlist deleted."}
